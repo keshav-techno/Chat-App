@@ -1,7 +1,7 @@
-import React from './node_modules/react';
+import React from 'react';
 import fire from '../config/fire';
-import { Grid, Form, Segment, Button, Header, Message, Icon, GridColumn } from './node_modules/semantic-ui-react'
-import { Link } from "./node_modules/react-router-dom";
+import { Grid, Form, Segment, Button, Header, Message, Icon, GridColumn } from 'semantic-ui-react'
+import { Link } from "react-router-dom";
 
 
 export default class Login extends React.Component {
@@ -10,7 +10,8 @@ export default class Login extends React.Component {
         this.state = {
             email: '',
             password: '',
-            errors: []
+            errors: [],
+            loading: false,
         }
     }
 
@@ -26,46 +27,33 @@ export default class Login extends React.Component {
             : ''
     }
 
-    isFormEmpty = ({email, password}) => {
-        return !email.length || !password.length
+    displayErrors = errors => errors.map((error, i) => <h2 key={i}>{error.message}</h2>)
 
-    }
+    validation = ({email,password}) => 
+        email && password;
 
-    validation = () => {
-        let errors = [];
-        let error;
-
-        if (this.isFormEmpty(this.state)) {
-            console.log(this.state);
-            error = { message: 'Fill in all feilds' };
-            this.setState({ errors: errors.concat(error) });
-            return false;
-        }
-        else {
-            return true;
-        }
-    }
+    // handle submit isn't working.
 
     handlesubmit = (e) => {
         e.preventDefault();
-        this.validation();
-        fire.auth().signInWithEmailAndPassword(this.state.Email, this.state.Password)
-            .then(signedInUser => {
-                console.log(signedInUser)
-            })
-            .catch(err => {
-                console.error(err);
-                this.setState({ errors: this.state.errors.concat(err), loading: false })
-
-            });
-    }
+        if(this.validation()){
+        this.setState({errors: [], loading: true});
+        fire.auth().signInWithEmailAndPassword.then(signedInUser =>{
+            console.log(signedInUser);
+        })
+        .catch(err => {
+            console.error(err);
+            this.setState({ errors: this.state.errors.concat(err), loading: false })            
+        })
+        }        
+    };
 
     render() {
         const { errors, loading } = this.state;
         return (
             <div className="ca-container--alignCenter">
                 <Grid textAlign='center' verticalAlign='middle'>
-                    <GridColumn textAlign="center" width="5" widescreen="4">
+                    <GridColumn textAlign="center" largeScreen="5" widescreen="4">
                         <Header as='h1' textAlign='center'>
                             <Icon name='code branch' color='blue' />
                             Login
