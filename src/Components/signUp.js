@@ -1,90 +1,91 @@
 import React from 'react';
-import {Grid, Form, Segment, Button, Header, Message, Icon } from 'semantic-ui-react'
+import { Grid, Form, Segment, Button, Header, Message, Icon } from 'semantic-ui-react'
 import { Link } from "react-router-dom";
 import fire from '../config/fire';
 
 
-export default class SignUp extends React.Component{
-    constructor(){
+export default class SignUp extends React.Component {
+    constructor() {
         super()
-        this.state={
-            Username:'',
-            Email:'',
-            Password:'',
-            Confirmpassword:'',
-            errors:[]
+        this.state = {
+            Username: '',
+            Email: '',
+            Password: '',
+            Confirmpassword: '',
+            errors: []
         }
     }
 
-    validation=() =>{
-        let errors=[];
+    validation = () => {
+        let errors = [];
         let error;
 
-        if(this.isFormEmpty(this.state)){
-            error={message: 'Fill in all feilds'};
-            this.setState({errors: errors.concat(error)});
+        if (this.isFormEmpty(this.state)) {
+            error = { message: 'Fill in all feilds' };
+            this.setState({ errors: errors.concat(error) });
             return false;
         }
-        else if(this.passValid(this.state)){
-            error={message: 'Password is invalid'};
-            this.setState({errors: errors.concat(error)});
+        else if (this.passValid(this.state)) {
+            error = { message: 'Password is invalid' };
+            this.setState({ errors: errors.concat(error) });
             return false;
         }
-        else{
+        else {
             return true;
         }
     }
 
-    isFormEmpty =({Username, Email, Password, Confirmpassword}) =>{
+    isFormEmpty = ({ Username, Email, Password, Confirmpassword }) => {
         return !Username.length || !Email.length || !Password.length || !Confirmpassword.length
 
     }
 
-    passValid=({Password, Confirmpassword}) => {
-       if(Password.length<6 || Confirmpassword.length<6){
-        return false;
-       }
-       else if(!Password === Confirmpassword){
-           return false;
-       }
-       else {
-           return true;
+    passValid = ({ Password, Confirmpassword }) => {
+        if (Password.length < 6 || Confirmpassword.length < 6) {
+            return false;
+        }
+        else if (!Password == Confirmpassword) {
+            return false;
+        }
+        else {
+            return true;
         }
     }
 
-    displayErrors = errors => errors.map((error, i) => <p key={i}>{error.message}</p> ) 
+    displayErrors = errors => errors.map((error, i) => <h2 key={i}>{error.message}</h2>)
 
-    handleChange= (e) => {
+    handleChange = (e) => {
         this.setState({ [e.target.name]: e.target.value })
     }
 
     handlesubmit = (e) => {
-        if(this.validation()){
+        if (this.validation()) {
             e.preventDefault();
-            fire.auth().createUserWithEmailAndPassword(this.state.Email, this.state.Password)
-            .then(createdUser => {
-            console.log(createdUser)
-            })
-            .catch(err =>{
-            console.error(err);
-            });
+            fire.auth().sign(this.state.Email, this.state.Password)
+                .then(createdUser => {
+                    console.log(createdUser)
+                })
+                .catch(err => {
+                    console.error(err);
+                });
         }
     }
 
-    render(){
-        return(
+    render() {
+        return (
             <Grid textAlign='center' verticalAlign='middle'>
-                <Grid.Column style={{maxWidth :450, marginTop: 150}} >
-                    <Header>
-                        <Icon name='save' color='blue' />
+                <Grid.Column textAlign="center" style={{ maxWidth: 450, marginTop: 150 }} >
+                <Icon name='save' size="huge" color='blue'/>
+                    <Header as='h1' textAlign='center'>
+                        Register
                     </Header>
                     <Form>
                         <Segment>
-                            {this.state.errors[0] && this.state.errors[0].message}
-                            <Form.Input fluid name='Username' type='text' icon='user'iconPosition='left' placeholder ='username' onChange={this.handleChange} />
-                            <Form.Input fluid name='Email' type='email' icon='mail'iconPosition='left' placeholder ='xyz@example.com' onChange={this.handleChange} />
-                            <Form.Input fluid name='Password' type='password' icon='lock'iconPosition='left' placeholder ='Password' onChange={this.handleChange} />
-                            <Form.Input fluid name='Confirmpassword' type='password' icon='repeat'iconPosition='left' placeholder ='Re-enter password' onChange={this.handleChange} />
+                            <h2 color='red' > {this.state.errors[0] && this.state.errors[0].message} </h2>
+                            <Form.Input fluid name='Username' type='text' icon='user' iconPosition='left' placeholder='username' onChange={this.handleChange} />
+                            <Form.Input fluid name='Email' type='email' icon='mail' iconPosition='left' placeholder='xyz@example.com' onChange={this.handleChange} />
+                            <Form.Input fluid name='Password' type='password' icon='lock' iconPosition='left' placeholder='Password' onChange={this.handleChange} />
+                            <Form.Input fluid name='Confirmpassword' type='password' icon='repeat' iconPosition='left' placeholder='Re-enter password' onChange={this.handleChange} />
                             <Button onClick={this.handlesubmit} color='blue'>Submit</Button>
                         </Segment>
                     </Form>
