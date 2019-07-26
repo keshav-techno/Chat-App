@@ -89,7 +89,7 @@ export default class SignUp extends React.Component {
         return (
             <div className="ca-container--alignCenter">
                 <Grid textAlign='center'>
-                    <Grid.Column textAlign="center" width="5" widescreen="4">
+                    <Grid.Column textAlign="center" largeScreen="5" widescreen="4">
                         <Icon name='registered' size="huge" color='blue' />
                         <Header as='h1' textAlign='center'>
                             Register

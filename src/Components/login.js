@@ -26,38 +26,22 @@ export default class Login extends React.Component {
             : ''
     }
 
-    isFormEmpty = ({email, password}) => {
-        return !email.length || !password.length
-
-    }
-
-    validation = () => {
-        let errors = [];
-        let error;
-
-        if (this.isFormEmpty(this.state)) {
-            console.log(this.state);
-            error = { message: 'Fill in all feilds' };
-            this.setState({ errors: errors.concat(error) });
-            return false;
-        }
-        else {
-            return true;
-        }
-    }
+    isFormValid = ({ email, password }) => email && password;
 
     handlesubmit = (e) => {
         e.preventDefault();
-        this.validation();
-        fire.auth().signInWithEmailAndPassword(this.state.Email, this.state.Password)
-            .then(signedInUser => {
-                console.log(signedInUser)
-            })
-            .catch(err => {
-                console.error(err);
-                this.setState({ errors: this.state.errors.concat(err), loading: false })
+        if (this.isFormValid(this.state)) {
+            fire.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
+                .then(signedInUser => {
+                    console.log(signedInUser)
+                })
+                .catch(err => {
+                    console.error(err);
+                    this.setState({ errors: this.state.errors.concat(err), loading: false })
 
-            });
+                });
+        }
+
     }
 
     render() {
@@ -65,16 +49,16 @@ export default class Login extends React.Component {
         return (
             <div className="ca-container--alignCenter">
                 <Grid textAlign='center' verticalAlign='middle'>
-                    <GridColumn textAlign="center" width="5" widescreen="4">
+                    <GridColumn textAlign="center" largeScreen="5" widescreen="4">
                         <Header as='h1' textAlign='center'>
                             <Icon name='code branch' color='blue' />
                             Login
                     </Header>
                         <Form>
-                        {errors[0] ? <Message color="red">{errors[0] && errors[0].message}</Message> : null}
+                            {errors[0] ? <Message color="red">{errors[0] && errors[0].message}</Message> : null}
                             <Segment>
                                 <Form.Input
-                                    fluid name='Email'
+                                    fluid name='email'
                                     type='email'
                                     icon='mail'
                                     iconPosition='left'
@@ -83,7 +67,7 @@ export default class Login extends React.Component {
                                     onChange={this.handleChange}
                                 />
                                 <Form.Input fluid
-                                    name='Password'
+                                    name='password'
                                     type='password'
                                     icon='lock'
                                     iconPosition='left'
@@ -96,7 +80,7 @@ export default class Login extends React.Component {
                                     color='blue'
                                     disabled={loading}
                                     className={loading ? "loading" : ""}
-                                    >
+                                >
                                     Login
                                     </Button>
                             </Segment>
