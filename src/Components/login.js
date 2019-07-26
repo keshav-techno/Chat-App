@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 
 export default class Login extends React.Component {
-    constructor() {
+    constructor(){
         super()
         this.state = {
             email: '',
@@ -29,16 +29,15 @@ export default class Login extends React.Component {
 
     displayErrors = errors => errors.map((error, i) => <h2 key={i}>{error.message}</h2>)
 
-    validation = ({email,password}) => 
-        email && password;
+    validation = ({ email , password }) =>  email && password;
 
-    // handle submit isn't working.
+    // handle submit isn't working. no errors nothing
 
     handlesubmit = (e) => {
         e.preventDefault();
-        if(this.validation()){
+        if(this.validation(this.state)){
         this.setState({errors: [], loading: true});
-        fire.auth().signInWithEmailAndPassword.then(signedInUser =>{
+        fire.auth().signInWithEmailAndPassword(this.state.email, this.state.password).then(signedInUser => {
             console.log(signedInUser);
         })
         .catch(err => {
@@ -49,7 +48,7 @@ export default class Login extends React.Component {
     };
 
     render() {
-        const { errors, loading } = this.state;
+        const {errors, loading } = this.state;
         return (
             <div className="ca-container--alignCenter">
                 <Grid textAlign='center' verticalAlign='middle'>
@@ -57,7 +56,7 @@ export default class Login extends React.Component {
                         <Header as='h1' textAlign='center'>
                             <Icon name='code branch' color='blue' />
                             Login
-                    </Header>
+                        </Header>
                         <Form>
                         {errors[0] ? <Message color="red">{errors[0] && errors[0].message}</Message> : null}
                             <Segment>
