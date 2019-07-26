@@ -1,7 +1,7 @@
-import React from 'react';
+import React from './node_modules/react';
 import fire from '../config/fire';
-import { Grid, Form, Segment, Button, Header, Message, Icon, GridColumn } from 'semantic-ui-react'
-import { Link } from "react-router-dom";
+import { Grid, Form, Segment, Button, Header, Message, Icon, GridColumn } from './node_modules/semantic-ui-react'
+import { Link } from "./node_modules/react-router-dom";
 
 
 export default class Login extends React.Component {

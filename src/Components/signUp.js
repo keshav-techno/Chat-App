@@ -1,6 +1,6 @@
-import React from 'react';
-import { Grid, Form, Segment, Button, Header, Message, Icon } from 'semantic-ui-react'
-import { Link } from "react-router-dom";
+import React from './node_modules/react';
+import { Grid, Form, Segment, Button, Header, Message, Icon } from './node_modules/semantic-ui-react'
+import { Link } from "./node_modules/react-router-dom";
 import fire from '../config/fire';
 
 export default class SignUp extends React.Component {
