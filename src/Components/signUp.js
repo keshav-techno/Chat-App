@@ -16,35 +16,16 @@ export default class SignUp extends React.Component {
         }
     }
 
-    validation = () => {
-        let errors = [];
-        let error;
-
-        if (this.isFormEmpty(this.state)) {
-            error = { message: 'Fill in all feilds' };
-            this.setState({ errors: errors.concat(error) });
-            return false;
-        }
-        else if (this.passValid(this.state)) {
-            error = { message: 'Password is invalid' };
-            this.setState({ errors: errors.concat(error) });
-            return false;
-        }
-        else {
-            return true;
-        }
-    }
-
     isFormEmpty = ({ Username, Email, Password, Confirmpassword }) => {
         return !Username.length || !Email.length || !Password.length || !Confirmpassword.length
 
     }
 
     passValid = ({ Password, Confirmpassword }) => {
-        if (Password.length < 6 || Confirmpassword.length < 6) {
+        if (Password.length <= 6 || Confirmpassword.length <= 6) {
             return false;
         }
-        else if (!Password == Confirmpassword) {
+        else if (Password !== Confirmpassword) {
             return false;
         }
         else {
@@ -58,10 +39,29 @@ export default class SignUp extends React.Component {
         this.setState({ [e.target.name]: e.target.value })
     }
 
+
+    validation = () => {
+        let errors = [];
+        let error;
+
+        if (this.isFormEmpty(this.state)) {
+            error = { message: 'Fill in all feilds' };
+            this.setState({ errors: errors.concat(error) });
+            return false;
+        }
+        else if (!this.passValid(this.state)) {
+            error = { message: 'Password is invalid' };
+            this.setState({ errors: errors.concat(error) });
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
     handlesubmit = (e) => {
+        e.preventDefault();
         if (this.validation()) {
-            e.preventDefault();
-            fire.auth().sign(this.state.Email, this.state.Password)
+            fire.auth().createUserWithEmailAndPassword(this.state.Email, this.state.Password)
                 .then(createdUser => {
                     console.log(createdUser)
                 })
