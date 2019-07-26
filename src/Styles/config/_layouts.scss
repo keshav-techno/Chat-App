@@ -1,0 +1,10 @@
+// start name with `ca` -`blockName` --- `propertyName`
+
+.ca-container--alignCenter {
+  margin: 0;
+  position: absolute;
+  width: 100%;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
