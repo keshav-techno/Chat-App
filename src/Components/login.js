@@ -18,35 +18,93 @@ export default class Login extends React.Component {
         this.setState({ [e.target.name]: e.target.value })
     }
 
+    handleInputError = (errors, InputValue) => {
+        return errors.some(error =>
+            error.message.toLowerCase().includes(InputValue)
+        )
+            ? 'error'
+            : ''
+    }
+
+    isFormEmpty = ({email, password}) => {
+        return !email.length || !password.length
+
+    }
+
+    validation = () => {
+        let errors = [];
+        let error;
+
+        if (this.isFormEmpty(this.state)) {
+            console.log(this.state);
+            error = { message: 'Fill in all feilds' };
+            this.setState({ errors: errors.concat(error) });
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+
     handlesubmit = (e) => {
-            e.preventDefault();
-            fire.auth().signInWithEmailAndPassword(this.state.Email, this.state.Password)
+        e.preventDefault();
+        this.validation();
+        fire.auth().signInWithEmailAndPassword(this.state.Email, this.state.Password)
             .then(signedInUser => {
-            console.log(signedInUser)
+                console.log(signedInUser)
             })
-            .catch(err =>{
-            console.error(err);
+            .catch(err => {
+                console.error(err);
+                this.setState({ errors: this.state.errors.concat(err), loading: false })
+
             });
     }
 
     render() {
+        const { errors, loading } = this.state;
         return (
-            <Grid textAlign='center' verticalAlign='middle'>
-                <GridColumn style={{ maxWidth: 450, marginTop: 150 }}>
-                    <Header as='h1' textAlign='center'>
-                        <Icon name='code branch' color='blue' />
-                        Login
+            <div className="ca-container--alignCenter">
+                <Grid textAlign='center' verticalAlign='middle'>
+                    <GridColumn textAlign="center" width="5" widescreen="4">
+                        <Header as='h1' textAlign='center'>
+                            <Icon name='code branch' color='blue' />
+                            Login
                     </Header>
-                    <Form>
-                        <Segment>
-                            <Form.Input fluid name='Email' type='email' icon='mail' iconPosition='left' placeholder='xyz@example.com' onChange={this.handleChange} />
-                            <Form.Input fluid name='Password' type='password' icon='lock' iconPosition='left' placeholder='Password' onChange={this.handleChange} />
-                            <Button onClick={this.handlesubmit} color='blue'>Login</Button>
-                        </Segment>
-                    </Form>
-                    <Message>Don't have an acount? <Link to='/signup'>Signup <Icon name='sign in' color='grey' /> </Link> </Message>
-                </GridColumn>
-            </Grid>
+                        <Form>
+                        {errors[0] ? <Message color="red">{errors[0] && errors[0].message}</Message> : null}
+                            <Segment>
+                                <Form.Input
+                                    fluid name='Email'
+                                    type='email'
+                                    icon='mail'
+                                    iconPosition='left'
+                                    placeholder='xyz@example.com'
+                                    className={this.handleInputError(errors, 'email')}
+                                    onChange={this.handleChange}
+                                />
+                                <Form.Input fluid
+                                    name='Password'
+                                    type='password'
+                                    icon='lock'
+                                    iconPosition='left'
+                                    placeholder='Password'
+                                    className={this.handleInputError(errors, 'password')}
+                                    onChange={this.handleChange}
+                                />
+                                <Button
+                                    onClick={this.handlesubmit}
+                                    color='blue'
+                                    disabled={loading}
+                                    className={loading ? "loading" : ""}
+                                    >
+                                    Login
+                                    </Button>
+                            </Segment>
+                        </Form>
+                        <Message>Don't have an acount? <Link to='/signup'>Signup <Icon name='sign in' color='grey' /> </Link> </Message>
+                    </GridColumn>
+                </Grid>
+            </div>
         )
     }
 }
