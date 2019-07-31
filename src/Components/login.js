@@ -29,26 +29,26 @@ export default class Login extends React.Component {
 
     displayErrors = errors => errors.map((error, i) => <h2 key={i}>{error.message}</h2>)
 
-    validation = ({ email , password }) =>  email && password;
-
-    // handle submit isn't working. no errors nothing
+    isFormValid = ({ email, password }) => email && password;
 
     handlesubmit = (e) => {
         e.preventDefault();
-        if(this.validation(this.state)){
-        this.setState({errors: [], loading: true});
-        fire.auth().signInWithEmailAndPassword(this.state.email, this.state.password).then(signedInUser => {
-            console.log(signedInUser);
-        })
-        .catch(err => {
-            console.error(err);
-            this.setState({ errors: this.state.errors.concat(err), loading: false })            
-        })
-        }        
-    };
+        if (this.isFormValid(this.state)) {
+            fire.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
+                .then(signedInUser => {
+                    console.log(signedInUser)
+                })
+                .catch(err => {
+                    console.error(err);
+                    this.setState({ errors: this.state.errors.concat(err), loading: false })
+
+                });
+        }
+
+    }
 
     render() {
-        const {errors, loading } = this.state;
+        const { errors, loading } = this.state;
         return (
             <div className="ca-container--alignCenter">
                 <Grid textAlign='center' verticalAlign='middle'>
@@ -61,7 +61,7 @@ export default class Login extends React.Component {
                         {errors[0] ? <Message color="red">{errors[0] && errors[0].message}</Message> : null}
                             <Segment>
                                 <Form.Input
-                                    fluid name='Email'
+                                    fluid name='email'
                                     type='email'
                                     icon='mail'
                                     iconPosition='left'
@@ -70,7 +70,7 @@ export default class Login extends React.Component {
                                     onChange={this.handleChange}
                                 />
                                 <Form.Input fluid
-                                    name='Password'
+                                    name='password'
                                     type='password'
                                     icon='lock'
                                     iconPosition='left'
