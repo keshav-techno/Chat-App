@@ -35,16 +35,14 @@ export default class Login extends React.Component {
         e.preventDefault();
         if (this.isFormValid(this.state)) {
             fire.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
-                .then(signedInUser => {
-                    console.log(signedInUser)
-                })
-                .catch(err => {
-                    console.error(err);
-                    this.setState({ errors: this.state.errors.concat(err), loading: false })
-
-                });
+            .then(signedInUser => {
+                console.log(signedInUser)
+            })
+            .catch(err => {
+                console.error(err);
+                this.setState({ errors: this.state.errors.concat(err), loading: false })
+            });
         }
-
     }
 
     render() {
@@ -65,7 +63,7 @@ export default class Login extends React.Component {
                                     type='email'
                                     icon='mail'
                                     iconPosition='left'
-                                    placeholder='xyz@example.com'
+                                    placeholder='abc@example.com'
                                     className={this.handleInputError(errors, 'email')}
                                     onChange={this.handleChange}
                                 />
@@ -82,10 +80,11 @@ export default class Login extends React.Component {
                                     onClick={this.handlesubmit}
                                     color='blue'
                                     disabled={loading}
-                                    className={loading ? "loading" : ""}
-                                    >
+                                    className={loading ?
+                                        "loading" : ""}
+                                >
                                     Login
-                                    </Button>
+                                </Button>
                             </Segment>
                         </Form>
                         <Message>Don't have an acount? <Link to='/signup'>Signup <Icon name='sign in' color='grey' /> </Link> </Message>
@@ -94,4 +93,4 @@ export default class Login extends React.Component {
             </div>
         )
     }
-}
+};

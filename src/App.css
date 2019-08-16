@@ -10,12 +10,9 @@ padding: 1em;
   overflow-y: scroll;
 }
 
-/*messagesForm.js */
-.message__form{
-  position: fixed !important;
-  bottom: 1em;
-  margin-left: 320px !important;
-  left: oem;
-  right: 1em;
-  z-index: 200;
+/* Message.js */
+.message__self{
+  border-left: 2px solid orange;
+  padding-left: 8px;
+  
 }

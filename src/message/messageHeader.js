@@ -15,13 +15,13 @@ export default class MessagHeader extends React.Component{
                     <Icon name={'star outline'} color='blue' />
                     </span>
                     <HeaderSubHeader>
-                        2 user
+                        {/* 2 user */}
                     </HeaderSubHeader>
                 </Header>
 
             {/* Channel search Input */}
                 <Header floated='right'> 
-                    <Input size='small' icon='search' name='searchTerm' placeholder='Search Messages'/>
+                    <Input size='small' icon='search' name='searchTerm' placeholder='Search Messages' />
                 </Header>
             </Segment>
             

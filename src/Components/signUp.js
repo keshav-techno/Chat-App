@@ -29,6 +29,7 @@ export default class SignUp extends React.Component {
             return false;
         }
         else if (this.passValid(this.state)) {
+            console.log(this.state);
             error = { message: 'Password is invalid' };
             this.setState({ errors: errors.concat(error) });
             return false;
@@ -37,17 +38,13 @@ export default class SignUp extends React.Component {
             return true;
         }
     }
-
     
     isFormEmpty = ({ username, email, password, confirm_password }) => {
         return !username.length || !email.length || !password.length || !confirm_password.length
     }
 
     passValid = ({ password, confirm_password }) => {
-        if (password.length >= 6) {
-            return false;
-        }
-        else if (password !== confirm_password) {
+        if (password.length >= 6 && password === confirm_password ) {
             return false;
         }
         else {
@@ -65,7 +62,6 @@ export default class SignUp extends React.Component {
             : ''
     }
     
-    
     handleChange = (e) => {
         this.setState({ [e.target.name]: e.target.value })
     }
@@ -79,12 +75,11 @@ export default class SignUp extends React.Component {
                     console.log(createdUser)
                     createdUser.user.updateProfile({
                         displayName: this.state.username,
-                        photoURL: `http://gravatar.com/avatar/${md5(createdUser.user.email)}?d=identicon`
+                        photoURL:`http://gravatar.com/avatar/${md5(createdUser.user.email)}?d=identicon`
                     })
                     .then(() =>{
                         this.saveUser(createdUser).then(()=>{
                             console.log('user saved');
-                            
                         })
                     })
                     .catch(err => {
@@ -114,7 +109,7 @@ export default class SignUp extends React.Component {
                         <Icon name='registered' size="huge" color='blue' />
                         <Header as='h1' textAlign='center'>
                             Register
-                    </Header>
+                        </Header>
                         <Form>
                             <Segment>
                                 {errors[0] ? <Message color="red">{errors[0] && errors[0].message}</Message> : null}
@@ -150,7 +145,7 @@ export default class SignUp extends React.Component {
                                     icon='repeat'
                                     iconPosition='left'
                                     placeholder='Re-enter password'
-                                    className={this.handleInputError(errors, 'password')}
+                                    className={this.handleInputError(errors, 'confirm_password')}
                                     onChange={this.handleChange}
                                 />
                                 <Button

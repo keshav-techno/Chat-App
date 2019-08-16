@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Column } from 'semantic-ui-react';
+import { Grid, } from 'semantic-ui-react';
 import './App.css';
 import { connect } from 'react-redux';
 import ColorPanel from './colorPanel/colorPanel';

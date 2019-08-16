@@ -107,7 +107,6 @@ class Channels extends React.Component {
 
     setActivateChannel = channel => {
         this.setState({ activeChannel: channel.id });
-
     }
 
     setFirstChannel = () => {
